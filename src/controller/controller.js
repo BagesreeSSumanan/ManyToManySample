@@ -138,4 +138,70 @@ const findTutorialById = (id) => {
       console.log(">> Error while finding Tutorial: ", err);
     });
 };
-module.exports = { createTutorial,createTag,addTutorial,findAlltags,findTagById,findAllTutorials,findTutorialById};
+
+const updateTutorial = async (id,tutorial,) => {
+  try {
+    const currenttutorial = await Tutorial.findByPk(id);
+    if (!currenttutorial) {
+      console.log("Tutorial not found");
+      return null;
+    }
+    await currenttutorial.update({
+       title: tutorial.title,
+      description: tutorial.description,},
+      {
+      where: { id: id } 
+    });
+    return currenttutorial;
+  } catch (err) {
+    console.log(">> Error while updating tutorials: ", err);
+  }
+};
+const updateTag = async (id,tag,) => {
+  try {
+    const currenttag = await Tag.findByPk(id);
+    if (!currenttag) {
+      console.log("Tag not found");
+      return null;
+    }
+    await currenttag.update({
+       name: tag.name,},
+      {
+      where: { id: id } 
+    });
+    return currenttag;
+  } catch (err) {
+    console.log(">> Error while updating tag: ", err);
+  }
+};
+const deleteTutorialById = async (id) => {
+  try {
+    const tutorial = await Tutorial.findByPk(id);
+    if (!tutorial) {
+      console.log("Tutorial not found");
+      return null;
+    }
+    await tutorial.destroy();
+    console.log("Tutorial deleted successfully");
+    return tutorial;
+  } catch (err) {
+    console.log(">> Error while deleting tutorial: ", err);
+  }
+};
+const deleteTagById = async (id) => {
+  try {
+    const tag = await Tag.findByPk(id);
+    if (!tag) {
+      console.log("Tag not found");
+      return null;
+    }
+    await tag.destroy();
+    console.log("Tag deleted successfully");
+    return tag;
+  } catch (err) {
+    console.log(">> Error while deleting tutorial: ", err);
+  }
+};
+module.exports = { createTutorial,createTag,addTutorial,findAlltags,findTagById,findAllTutorials,findTutorialById,
+    updateTutorial,updateTag,deleteTutorialById,deleteTagById
+};

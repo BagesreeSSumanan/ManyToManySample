@@ -52,4 +52,90 @@ const addTutorial = (tagId, tutorialId) => {
       console.log(">> Error while adding Tutorial to Tag: ", err);
     });
 };
-module.exports = { createTutorial,createTag,addTutorial};
+
+const findAlltags = () => {
+  return Tag.findAll({
+    include: [
+      {
+        model: Tutorial,
+        as: "tutorial",
+        attributes: ["id", "title", "description"],
+        through: {
+          attributes: [],
+        }
+      },
+    ],
+  })
+    .then((tags) => {
+      return tags;
+    })
+    .catch((err) => {
+      console.log(">> Error while retrieving Tags: ", err);
+    });
+};
+
+const findTagById = (id) => {
+  return Tag.findByPk(id, {
+    include: [
+      {
+        model: Tutorial,
+        as: "tutorial",
+        attributes: ["id", "title", "description"],
+        through: {
+          attributes: [],
+        }
+      },
+    ],
+  })
+    .then((tag) => {
+      return tag;
+    })
+    .catch((err) => {
+      console.log(">> Error while finding Tag: ", err);
+    });
+};
+const findAllTutorials = () => {
+  return Tutorial.findAll({
+    include: [
+      {
+        model: Tag,
+        as: "tags",
+        attributes: ["id", "name"],
+        through: {
+          attributes: [],
+        },
+      },
+    ],
+  })
+    .then((tutorials) => {
+      return tutorials;
+    })
+    .catch((err) => {
+      console.log(">> Error while retrieving Tutorials: ", err);
+    });
+};
+const findTutorialById = (id) => {
+  return Tutorial.findByPk(id, {
+    include: [
+      {
+        model: Tag,
+        as: "tags",
+        attributes: ["id", "name"],
+        through: {
+          attributes: [],
+        },
+        // through: {
+        //   attributes: ["tag_id", "tutorial_id"],
+        // },
+      },
+    ],
+  })
+    .then((tutorial) => {
+        console.log("tutorial",tutorial)
+      return tutorial;
+    })
+    .catch((err) => {
+      console.log(">> Error while finding Tutorial: ", err);
+    });
+};
+module.exports = { createTutorial,createTag,addTutorial,findAlltags,findTagById,findAllTutorials,findTutorialById};

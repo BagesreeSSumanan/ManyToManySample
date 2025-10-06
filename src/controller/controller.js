@@ -141,6 +141,8 @@ const findTutorialById = (id) => {
 
 const updateTutorial = async (id,tutorial,) => {
   try {
+      console.log("tutorial.tagId",tutorial.tagId);
+      console.log("tutorial.tagId",id);
     const currenttutorial = await Tutorial.findByPk(id);
     if (!currenttutorial) {
       console.log("Tutorial not found");
@@ -148,15 +150,15 @@ const updateTutorial = async (id,tutorial,) => {
     }
     await currenttutorial.update({
        title: tutorial.title,
-      description: tutorial.description,},
-      {
-      where: { id: id } 
-    });
+      description: tutorial.description,});
+    await currenttutorial.setTags(tutorial.tagId);
     return currenttutorial;
   } catch (err) {
     console.log(">> Error while updating tutorials: ", err);
   }
 };
+
+
 const updateTag = async (id,tag,) => {
   try {
     const currenttag = await Tag.findByPk(id);
@@ -169,6 +171,7 @@ const updateTag = async (id,tag,) => {
       {
       where: { id: id } 
     });
+    Tutorial.setTags([tagIds])
     return currenttag;
   } catch (err) {
     console.log(">> Error while updating tag: ", err);
